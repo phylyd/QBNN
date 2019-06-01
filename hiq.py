@@ -1,3 +1,6 @@
+
+#author: Yidong Liao         yidong.liao@uq.net.au
+
 import sys
 import numpy as np
 import cmath
@@ -236,8 +239,6 @@ if __name__ == "__main__":
 
     #All(Measure) | layer1_weight_reg
     #All(Measure) | layer2_weight_reg
-
-
     
     eng.flush()
     
@@ -249,7 +250,8 @@ if __name__ == "__main__":
     
     print("===========================================================================")
     print("This is the QBNN demo")
-    print("The optimal weight string is:")
+    print("The code will be updated to print the complete results, for now we print the following:) 
+    print("The probabilities of obtaining some optimal weight strings are:")
     #print(int(layer1_weight_reg[0]),int(layer1_weight_reg[1]),int(layer1_weight_reg[2]),int(layer1_weight_reg[3]),int(layer1_weight_reg[4]),int(layer1_weight_reg[5]),int(layer2_weight_reg[0]),int(layer2_weight_reg[1]))
     print(a)
     print(a2)
