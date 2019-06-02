@@ -175,7 +175,14 @@ def quanutm_phase_estimation(eng):
     get_inverse(QFT) | phase_reg
 
 def add_minus_sign(eng):
-
+ """
+    Marks the solution string 1,0,1,0,...,0,1 by flipping the output qubit,
+    conditioned on qubits being equal to the alternating bit-string.
+    Args:
+        eng (MainEngine): Main compiler engine the algorithm is being run on.
+        qubits (Qureg): n-qubit quantum register Grover search is run on.
+        output (Qubit): Output qubit to flip in order to mark the solution.
+    """
     with Compute(eng):
           quanutm_phase_estimation(eng)
     
