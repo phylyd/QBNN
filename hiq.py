@@ -71,7 +71,7 @@ def oracle(eng):
     X|output_reg[2]
     X|des_output    
       
-    
+#The Quantum Neural Network  
 def qnn(eng):
 
     with Compute(eng):
