@@ -23,7 +23,7 @@ import hiq.setups.decompositions
 
 theta = math.pi/8
 
-
+# The Quantum Binary Neuron (QBN)
 def qbn(eng): 
 
     CNOT | (layer1_weight_reg[0],layer1_input_reg[0])
@@ -60,7 +60,8 @@ def qbn(eng):
     CNOT | (layer2_weight_reg[1],output_reg[1]) 
 
     ControlledGate(NOT,2) | (output_reg[0],output_reg[1],output_reg[2]) 
-    
+
+#The Oracle
 def oracle(eng):
     
     ControlledGate(Ph(theta), 2) | (output_reg[2],des_output,ancilla2)
