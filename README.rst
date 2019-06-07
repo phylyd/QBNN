@@ -7,7 +7,7 @@ The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http
 
 .. image:: docs/images/braket_notation.svg
     
-.. image:: QBNN/circuits/Example 1 QBN Circuit.png
+.. image:: circuits/Example 1 QBN Circuit.png
 
     :alt: Rx(theta)|qubit>
     :width: 100px
