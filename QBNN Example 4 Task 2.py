@@ -23,11 +23,11 @@ import hiq.setups.decompositions
 
 theta = math.pi/8    #the incremental in phase accumulation
 
- ""The operations in Quantum Binary Neurons (QBNs): multiplications between weights and inputs are performed by CNOTs, 
- addition and activation are done by a series multi-controlled gates""
-
 def qbn(eng): 
-
+  
+ """The operations in Quantum Binary Neurons (QBNs): multiplications between weights and inputs are performed by CNOTs, 
+ addition and activation are done by a series multi-controlled gates"""
+  
   #operations in the 1st layer
     CNOT | (layer1_weight_reg[0],layer1_input_reg[0])
     CNOT | (layer1_weight_reg[1],layer1_input_reg[1])  
