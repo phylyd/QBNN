@@ -24,7 +24,7 @@ Example 4. 3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:
 .. image:: circuits/Example_4_QBNN_Circuit.png
      
 
-.. image:: results/weight_state_evolution_Example_3.pdf
+.. image:: results/tasks.png
      
      
      
