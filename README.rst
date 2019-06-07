@@ -13,6 +13,11 @@ The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http
      :width: 100px
 .. image:: circuits/Example_4_QBNN_Circuit.png
      :width: 100px
+
+.. image:: results/weight_state_evolution_Example_3
+     
+     
+     
 The framework is shown below:
 
 .. image:: Framework.png
