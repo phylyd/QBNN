@@ -1,1 +1,1 @@
-# QBNN
+# Quantum Binary Neural Network
