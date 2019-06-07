@@ -7,12 +7,19 @@ The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http
 
 The Examples of QBNN and the corresponding quantum circuits are
 Example 1. Single neuron with 2 weights and 2 inputs:
+
 .. image:: circuits/Example_1_QBN_Circuit.png
-Example 2. Single neuron with 3 weights and 3 inputs:    
+
+Example 2. Single neuron with 3 weights and 3 inputs:
+
 .. image:: circuits/Example_2_QBN_Circuit.png
-Example 3. 3-layer Neural Network with 6 weights, 2 inputs and 1 ouput:   
+
+Example 3. 3-layer Neural Network with 6 weights, 2 inputs and 1 ouput: 
+
 .. image:: circuits/Example_3_QBNN_Circuit.png
-Example 4. 3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:    
+
+Example 4. 3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:  
+
 .. image:: circuits/Example_4_QBNN_Circuit.png
      
 
