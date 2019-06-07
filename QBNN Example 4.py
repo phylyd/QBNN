@@ -21,9 +21,9 @@ ctypes.CDLL("libmpi.so", mode=ctypes.RTLD_GLOBAL)
 from huawei.hiq.cengines import GreedyScheduler
 import hiq.setups.decompositions
 
-theta = math.pi/8
+theta = math.pi/8    #the incremental in phase accumulation
 
-# The Quantum Binary Neuron (QBN)
+# The operations in Quantum Binary Neurons (QBNs): multiplications between weights and inputs are performed by CNOTs, while addition and activation are done by a series multi-controlled gates
 def qbn(eng): 
 
     CNOT | (layer1_weight_reg[0],layer1_input_reg[0])
