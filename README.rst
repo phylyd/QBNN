@@ -5,7 +5,8 @@ presenting the code implementations of QBNN examples.
 
 The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http://hiq.huaweicloud.com/en/index.html
 
-The Examples of QBNN and the corresponding quantum circuits are
+The QBNN Examples with the corresponding quantum circuits are:
+
 Example 1. Single neuron with 2 weights and 2 inputs:
 
 .. image:: circuits/Example_1_QBN_Circuit.png
