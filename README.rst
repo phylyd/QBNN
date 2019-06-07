@@ -25,8 +25,10 @@ Example 4. 3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:
      
 
 .. image:: results/tasks.png
-     
-     
+
+.. image:: results/weight_state_evolution_Example_2_Task_1.png
+.. image:: results/weight_state_evolution_Example_2_Task_2.png
+.. image:: results/Probability_of_Success_Example_4.png
      
 The framework is shown below:
 
