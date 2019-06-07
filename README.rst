@@ -23,11 +23,28 @@ Example 4. 3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:
 
 .. image:: circuits/Example_4_QBNN_Circuit.png
      
+For the QBN in Example 2 and QBNN in Example 4, we consider the following two tasks:
 
 .. image:: results/tasks.png
 
+When we apply task 1  to QBN in example 2, we see the weight state evolution over iterations: 
+
 .. image:: results/weight_state_evolution_Example_2_Task_1.png
+
+When we apply task 2 to QBN in example 2, we see the weight state evolution over iterations:
+
 .. image:: results/weight_state_evolution_Example_2_Task_2.png
+
+For the QBNN in Example 3, we use the same training set as stated in Example 1. The weight state evolution during the training iterations is:
+
+.. image:: results/weight_state_evolution_Example_3.png
+
+Similarly, we trained the QBNN in Example 4 with the two tasks. For instance,the weight state evolution of the training with task 2:
+
+.. image:: results/weight_state_evolution_Example_4_Task_2.png
+
+The probability of success (The probability of obtaining an optimal weights) over iterations for the two tasks respectively:
+
 .. image:: results/Probability_of_Success_Example_4.png
      
 The framework is shown below:
