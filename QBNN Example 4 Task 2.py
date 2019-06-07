@@ -23,9 +23,11 @@ import hiq.setups.decompositions
 
 theta = math.pi/8    #the incremental in phase accumulation
 
-# The operations in Quantum Binary Neurons (QBNs): multiplications between weights and inputs are performed by CNOTs, while addition and activation are done by a series multi-controlled gates
+# The operations in Quantum Binary Neurons (QBNs): multiplications between weights and inputs are performed by CNOTs, 
+# addition and activation are done by a series multi-controlled gates
 def qbn(eng): 
 
+  #operations in the 1st layer
     CNOT | (layer1_weight_reg[0],layer1_input_reg[0])
     CNOT | (layer1_weight_reg[1],layer1_input_reg[1])  
     CNOT | (layer1_weight_reg[2],layer1_input_reg[2])
@@ -55,13 +57,14 @@ def qbn(eng):
     ControlledGate(NOT,3) | (layer1_input_reg[3],layer1_input_reg[4],layer1_input_reg[5],output_reg[1])  
     X|layer1_input_reg[5]
     
-    
+   #operations in the 2nd Layer
     CNOT | (layer2_weight_reg[0],output_reg[0])
     CNOT | (layer2_weight_reg[1],output_reg[1]) 
 
     ControlledGate(NOT,2) | (output_reg[0],output_reg[1],output_reg[2]) 
 
-#The Oracle
+#The Oracle that compares output of the network and the desired ouput with respect to corresponding inputs, 
+# adds a incremental phase if they are identical.
 def oracle(eng):
     
     ControlledGate(Ph(theta), 2) | (output_reg[2],des_output,ancilla2)
@@ -71,7 +74,7 @@ def oracle(eng):
     X|output_reg[2]
     X|des_output    
       
-#The Quantum Neural Network  
+#The marking process--for one input: Computation with QBNN, Oracle adding phase followed by Uncomputation of QBNN
 def qnn(eng):
 
     with Compute(eng):
@@ -81,7 +84,8 @@ def qnn(eng):
      
     Uncompute(eng) 
     
-    
+#The marking process--accumulation for many inputs in the training set:
+# We chagne the inputs for each QBNN run by applying X gates on the input register, adopting Task 2 for this instance.
 def run_qnn(eng):
 
     qnn(eng)
@@ -155,7 +159,10 @@ def run_qnn(eng):
     X|layer1_input_reg[2]
     X|layer1_input_reg[5]
     #X|des_output
+
     
+# Phase estimation process to evaluate the accumulated phase, namely the goodness of each weight
+# with the precision as 0.000*2pi for this instance
 def quanutm_phase_estimation(eng):
 
     All(H) | phase_reg
@@ -175,15 +182,12 @@ def quanutm_phase_estimation(eng):
   
     get_inverse(QFT) | phase_reg
 
+    
+#Binarize the marking--According to the evaluated phase(goodness) of each weight from PE, add a minus sign on those ones that match
+#the critia of optimal weights--For this instance, weights with goodness of 100% accuracy (a weight is good for all the 
+#input-desired ouput pairs) are marked with a minus sign in front of them.
 def add_minus_sign(eng):
- """
-    Marks the solution string 1,0,1,0,...,0,1 by flipping the output qubit,
-    conditioned on qubits being equal to the alternating bit-string.
-    Args:
-        eng (MainEngine): Main compiler engine the algorithm is being run on.
-        qubits (Qureg): n-qubit quantum register Grover search is run on.
-        output (Qubit): Output qubit to flip in order to mark the solution.
-    """
+ 
     with Compute(eng):
           quanutm_phase_estimation(eng)
     
@@ -195,6 +199,7 @@ def add_minus_sign(eng):
     
     Uncompute(eng)
     
+#Standard Grover's Diffusion to amplified the marked weights
 def diffusion(eng):
 
     with Compute(eng):
@@ -207,6 +212,7 @@ def diffusion(eng):
 
     Uncompute(eng)
     
+#The whole training cycle: binarized marking + diffusion   
 def run_qbnn(eng):    
     
     add_minus_sign(eng)
@@ -216,9 +222,10 @@ def run_qbnn(eng):
 
 if __name__ == "__main__":
     
-    eng = MainEngine(backend = Simulator(rnd_seed = 11))
+    eng = MainEngine(backend = Simulator(rnd_seed = 11))  #set up the simulator
 
-    layer1_weight_reg = eng.allocate_qureg(6)
+    #allocate all the qubits
+    layer1_weight_reg = eng.allocate_qureg(6)   
     layer1_input_reg = eng.allocate_qureg(6)
 
     layer2_weight_reg = eng.allocate_qureg(2)
@@ -230,15 +237,14 @@ if __name__ == "__main__":
     ancilla2 = eng.allocate_qubit()
     phase_reg = eng.allocate_qureg(3)
     
+    #initialize the ancilla and weight qubits
     X | ancilla_qubit
     H | ancilla_qubit
 
     All(H) | layer1_weight_reg
     All(H) | layer2_weight_reg
 
-    #with Loop(eng, 6):
-       # run_qbnn(eng)
-    #add_minus_sign(eng)
+    #run the training cycle
     with Loop(eng,5):
         run_qbnn(eng)
     
