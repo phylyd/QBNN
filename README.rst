@@ -5,10 +5,7 @@ presenting the code implementations of QBNN examples.
 
 The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http://hiq.huaweicloud.com/en/index.html
     
-.. image:: circuits/Example 1 QBN Circuit.png
-
-    :alt: Rx(theta)|qubit>
-    :width: 100px
+.. image:: Circuits/Example 1 QBN Circuit.png
 
 The framework is shown below:
 
