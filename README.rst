@@ -14,7 +14,7 @@ The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http
 .. image:: circuits/Example_4_QBNN_Circuit.png
      :width: 100px
 
-.. image:: results/weight_state_evolution_Example_3
+.. image:: results/weight_state_evolution_Example_3.pdf
      
      
      
