@@ -47,6 +47,6 @@ The probability of success (The probability of obtaining an optimal weights) ove
 
 .. image:: results/Probability_of_Success_Example_4.png
      
-The framework is shown below:
+The framework of the code is shown below:
 
-.. image:: Framework.png
+.. image:: Code_Framework.png
