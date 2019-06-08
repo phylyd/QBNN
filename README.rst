@@ -5,6 +5,18 @@ presenting the code implementations of QBNN examples.
 
 The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http://hiq.huaweicloud.com/en/index.html
 
+All the implementation examples execute the following generic training cycle:
+
+.. image:: circuits/training_cycle.png
+
+The details of each block can be seen below: 
+
+.. image:: circuits/generic_circuit.png
+
+we provide the hierachy of the code that realize the training circuit:
+
+.. image:: Code_hierachy.png
+
 The QBNN Examples with the corresponding quantum circuits are:
 
 【Example 1.】 Single neuron with 2 weights and 2 inputs:
@@ -48,16 +60,3 @@ Similarly, we trained the QBNN in Example 4 with the two tasks. For instance,the
 The probability of success (The probability of obtaining an optimal weights) over iterations for the two tasks respectively:
 
 .. image:: results/Probability_of_Success_Example_4.png
-
-
-All the implementation examples above execute the following generic training cycle:
-
-.. image:: circuits/training_cycle.png
-
-The details of each block can be seen below: 
-
-.. image:: circuits/generic_circuit.png
-
-Next we provide the hierachy of the code that realize the training circuit:
-
-.. image:: Code_hierachy.png
