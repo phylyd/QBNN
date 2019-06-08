@@ -5,6 +5,10 @@ presenting the code implementations of QBNN examples.
 
 The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http://hiq.huaweicloud.com/en/index.html
 
+The hierachy of the code can be illustrated as follow:
+
+.. image:: Code_hierachy.png
+
 All the implementation examples execute the following generic training cycle:
 
 .. image:: circuits/training_cycle.png
@@ -12,10 +16,6 @@ All the implementation examples execute the following generic training cycle:
 The details of each block can be seen below: 
 
 .. image:: circuits/generic_circuit.png
-
-we provide the hierachy of the code that realize the training circuit:
-
-.. image:: Code_hierachy.png
 
 The QBNN Examples with the corresponding quantum circuits are:
 
