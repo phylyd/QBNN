@@ -47,6 +47,7 @@ The probability of success (The probability of obtaining an optimal weights) ove
 
 .. image:: results/Probability_of_Success_Example_4.png
 
+.. image:: circuits/training_cycle.png
 
 .. image:: circuits/generic_circuit.png
 
