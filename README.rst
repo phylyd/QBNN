@@ -46,6 +46,11 @@ Similarly, we trained the QBNN in Example 4 with the two tasks. For instance,the
 The probability of success (The probability of obtaining an optimal weights) over iterations for the two tasks respectively:
 
 .. image:: results/Probability_of_Success_Example_4.png
+
+
+.. image:: circuits/generic_circuit.png
+
+
      
 The framework of the code is shown below:
 
