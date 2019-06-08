@@ -47,12 +47,15 @@ The probability of success (The probability of obtaining an optimal weights) ove
 
 .. image:: results/Probability_of_Success_Example_4.png
 
+
+All the implementation examples above execute the following generic training cycle:
+
 .. image:: circuits/training_cycle.png
+
+The details of each block can be seen below: 
 
 .. image:: circuits/generic_circuit.png
 
+Next we provide the hierachy of the code that realize the training circuit:
 
-     
-The framework of the code is shown below:
-
-.. image:: Code_Framework.png
+.. image:: Code_hierachy.png
