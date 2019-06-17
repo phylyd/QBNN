@@ -3,12 +3,22 @@ import sys
 import numpy as np
 import cmath
 import math
-import copy
-from projectq import MainEngine
-from projectq.ops import Ph,ControlledGate,NOT,CNOT,H, Z, All, R, Swap, Measure, X, get_inverse, QFT, Tensor, BasicGate
 
-from projectq.meta import Loop, Compute, Uncompute, Control
-from projectq.backends import CircuitDrawer,Simulator
+from hiq.ops import Ph,ControlledGate,NOT,CNOT,H, Z, All, R, Swap, Measure, X, get_inverse, QFT, Tensor, BasicGate
+from hiq.meta import Loop, Compute, Uncompute, Control
+
+from hiq.backends import CircuitDrawer, CommandPrinter, Simulator
+from hiq.cengines import (MainEngine,
+                               AutoReplacer,
+                               LocalOptimizer,
+                               TagRemover,
+                               DecompositionRuleSet)
+import ctypes
+ctypes.CDLL("libmpi.so", mode=ctypes.RTLD_GLOBAL)
+
+from huawei.hiq.cengines import GreedyScheduler
+import hiq.setups.decompositions
+
 
 theta = math.pi/4
   
