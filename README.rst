@@ -49,7 +49,7 @@ When we apply task 2 to QBN in example 2, we see the weight state evolution over
 
 For the QBNN in Example 3, we use the same training set as stated in Example 1. The weight state evolution during the training iterations is:
 
-.. image:: results/weight_state_evolution_Example_3.png
+.. image:: results/weight_state_evolution_Example_3.jpg
 
 Similarly, we trained the QBNN in Example 4 with the two tasks. For instance,the weight state evolution of the training with task 2:
 
