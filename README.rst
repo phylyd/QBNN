@@ -5,8 +5,6 @@ presenting the code implementations of QBNN examples.
 
 The implementations are done on Huawei's Quantum Computing Platform "HiQ" : http://hiq.huaweicloud.com/en/index.html
 
-.. image:: QBNN_poster.png
-
 The hierachy of the code can be illustrated as follow:
 
 .. image:: Code_hierachy.png
