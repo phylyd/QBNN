@@ -1,25 +1,19 @@
-
 #author: Yidong Liao         yidong.liao@uq.net.au
 
-import sys
-import numpy as np
 import cmath
 import math
 
-from hiq.ops import Ph,ControlledGate,NOT,CNOT,H, Z, All, R, Swap, Measure, X, get_inverse, QFT, Tensor, BasicGate
-from hiq.meta import Loop, Compute, Uncompute, Control
+from projectq.ops import Ph,ControlledGate,NOT,CNOT,H, Z, All, R, Swap, Measure, X, get_inverse, QFT, Tensor, BasicGate
+from projectq.meta import Loop, Compute, Uncompute, Control
 
-from hiq.backends import CircuitDrawer, CommandPrinter, Simulator
-from hiq.cengines import (MainEngine,
+from projectq.cengines import (MainEngine,
                                AutoReplacer,
                                LocalOptimizer,
                                TagRemover,
                                DecompositionRuleSet)
-import ctypes
-ctypes.CDLL("libmpi.so", mode=ctypes.RTLD_GLOBAL)
-
-from huawei.hiq.cengines import GreedyScheduler
-import hiq.setups.decompositions
+from hiq.projectq.cengines import GreedyScheduler, HiQMainEngine
+from hiq.projectq.backends import SimulatorMPI
+import projectq.setups.decompositions
 
 theta = math.pi/8    #the incremental in phase accumulation
 
