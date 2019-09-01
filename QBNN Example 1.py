@@ -1,28 +1,26 @@
+#author: Yidong Liao         yidong.liao@uq.net.au
 
-import sys
-import numpy as np
 import cmath
 import math
 
-from hiq.ops import Ph,ControlledGate,NOT,CNOT,H, Z, All, R, Swap, Measure, X, get_inverse, QFT, Tensor, BasicGate
-from hiq.meta import Loop, Compute, Uncompute, Control
+from projectq.ops import Ph,ControlledGate,NOT,CNOT,H, Z, All, R, Swap, Measure, X, get_inverse, QFT, Tensor, BasicGate
+from projectq.meta import Loop, Compute, Uncompute, Control
 
-from hiq.backends import CircuitDrawer, CommandPrinter, Simulator
-from hiq.cengines import (MainEngine,
+from projectq.cengines import (MainEngine,
                                AutoReplacer,
                                LocalOptimizer,
                                TagRemover,
                                DecompositionRuleSet)
-import ctypes
-ctypes.CDLL("libmpi.so", mode=ctypes.RTLD_GLOBAL)
+from hiq.projectq.cengines import GreedyScheduler, HiQMainEngine
+from hiq.projectq.backends import SimulatorMPI
+import projectq.setups.decompositions
 
-from huawei.hiq.cengines import GreedyScheduler
-import hiq.setups.decompositions
-
-
-theta = math.pi/4
+theta = math.pi/4     #the incremental in phase accumulation
   
 def qbn(eng): 
+  
+  """The operations in Quantum Binary Neurons (QBNs): multiplications between weights and inputs are performed by CNOTs, 
+ addition and activation are done by a series multi-controlled gates"""
 
     CNOT | (layer1_weight_reg[0],layer1_input_reg[0])
     CNOT | (layer1_weight_reg[1],layer1_input_reg[1])  
@@ -33,6 +31,9 @@ def qbn(eng):
 
 def oracle(eng):
     
+  """The Oracle that compares output of the network and the desired ouput with respect to corresponding inputs, 
+  adds a incremental phase if they are identical."""
+  
     ControlledGate(Ph(theta), 2) | (output,des_output,ancilla_qubit2)
     X|output
     X|des_output
@@ -41,6 +42,8 @@ def oracle(eng):
     X|des_output    
     
 def qnn(eng):
+  
+  """ The marking process--for one input: Computation with QBNN, Oracle adding phase followed by Uncomputation of QBNN"""
 
     with Compute(eng):
         qbn(eng)
@@ -50,6 +53,9 @@ def qnn(eng):
     Uncompute(eng)  
     
 def run_qnn(eng):
+  
+  """ The marking process--accumulation for many inputs in the training set: 
+  We chagne the inputs for each QBNN run by applying X gates on the input register, adopting Task 2 for this instance."""
 
     qnn(eng)
 
@@ -75,6 +81,8 @@ def run_qnn(eng):
    
     
 def quanutm_phase_estimation(eng):
+  
+  """ Phase estimation process to evaluate the accumulated phase, namely the goodness of each weight """
     
     All(H) | phase_reg
 
@@ -94,6 +102,10 @@ def quanutm_phase_estimation(eng):
     get_inverse(QFT) | phase_reg
        
 def add_minus_sign(eng):
+  
+  """ Binarize the marking--According to the evaluated phase(goodness) of each weight from PE, add a minus sign on those ones that match
+the critia of optimal weights--For this instance, weights with goodness of 100% accuracy (a weight is good for all the 
+input-desired ouput pairs) are marked with a minus sign in front of them. """
 
     with Compute(eng):
           quanutm_phase_estimation(eng)
@@ -109,6 +121,8 @@ def add_minus_sign(eng):
 
     
 def diffusion(eng):
+  
+  """ Standard Grover's Diffusion to amplified the marked weights """
 
     with Compute(eng):
             All(H) | layer1_weight_reg
@@ -120,7 +134,9 @@ def diffusion(eng):
 
     Uncompute(eng)
     
-def run_qbnn(eng):    
+def run_qbnn(eng):   
+  
+  """ The whole training cycle: binarized marking + diffusion """
     
     add_minus_sign(eng)
     
@@ -131,6 +147,7 @@ if __name__ == "__main__":
     
     eng = MainEngine(backend = Simulator(rnd_seed = 1))
     
+    #allocate all the qubits
     layer1_weight_reg = eng.allocate_qureg(2)
     layer1_input_reg = eng.allocate_qureg(2)
 
@@ -140,11 +157,13 @@ if __name__ == "__main__":
     ancilla_qubit = eng.allocate_qubit()
     phase_reg = eng.allocate_qureg(3)
     
+    #initialize the ancilla and weight qubits
     X | ancilla_qubit
     H | ancilla_qubit
 
     All(H) | layer1_weight_reg
-    
+   
+    #run the training cycles
     with Loop(eng, 3):
          run_qbnn(eng)
     #add_minus_sign(eng)
@@ -155,42 +174,7 @@ if __name__ == "__main__":
     X | ancilla_qubit
     
     eng.flush()
-    
-    #mapping, wavefunction = copy.deepcopy(eng.backend.cheat())
 
-    #print("The full wavefunction is: {}".format(wavefunction))
- 
-    
-    #a=eng.backend.get_amplitude('1100000000',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #b=eng.backend.get_amplitude('1000000000',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #c=eng.backend.get_amplitude('0100000001',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    
-    #d1=eng.backend.get_amplitude('00000000110',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #d2=eng.backend.get_amplitude('10000000110',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #d3=eng.backend.get_amplitude('01000000100',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #d4=eng.backend.get_amplitude('11000000100',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #dd=eng.backend.get_amplitude('00000000001',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #ddd=eng.backend.get_amplitude('000000000',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #dddd=eng.backend.get_amplitude('0000000011',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    d1=eng.backend.get_amplitude('00000000000',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    d2=eng.backend.get_amplitude('10000000000',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    d3=eng.backend.get_amplitude('01000000000',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    d4=eng.backend.get_amplitude('11000000000',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    
-    
-    #p1=eng.backend.get_probability('00000000110',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #p2=eng.backend.get_probability('10000000110',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    #p2=eng.backend.get_probability('00000000001',layer1_weight_reg+layer1_input_reg+output+des_output+ancilla_qubit2+ancilla_qubit+phase_reg )
-    
-    
-    
-    e=eng.backend.get_probability('0',ancilla_qubit)
-    r=eng.backend.get_probability('000',layer1_input_reg)
-    g1=eng.backend.get_probability('001',phase_reg)
-    g2=eng.backend.get_probability('010',phase_reg)
-    g3=eng.backend.get_probability('011',phase_reg)
-    g4=eng.backend.get_probability('100',phase_reg)
-    g5=eng.backend.get_probability('000',phase_reg)
     
     w1=eng.backend.get_probability('00',layer1_weight_reg)
     w2=eng.backend.get_probability('01',layer1_weight_reg)
@@ -198,34 +182,16 @@ if __name__ == "__main__":
     w4=eng.backend.get_probability('11',layer1_weight_reg)
     
     
+    print("===========================================================================")
+    print("This is the QBNN demo")
+    print("The code will be updated to print the complete results, for now we print the following:) 
+    print("The probabilities of obtaining the weight strings are:")
     
-    #print("Measured: {}".format(a))
-    #print("Measured: {}".format(b))
-    #print("Measured: {}".format(c))
-    print("Measured: {}".format(d1))
-    print("Measured: {}".format(d2))
-    print("Measured: {}".format(d3))
-    print("Measured: {}".format(d4))
-    #print("Measured: {}".format(p1))
-    #print("Measured: {}".format(p2))
+    print("Measured probabilty of weight string 00: {}".format(w1))
+    print("Measured probabilty of weight string 01: {}".format(w2))
+    print("Measured probabilty of weight string 10: {}".format(w3))
+    print("Measured probabilty of weight string 11: {}".format(w4))
     
-    
-    print("Measured: {}".format(e))
-    print("Measured: {}".format(r))
-    print("Measured: {}".format(g1))
-    print("Measured: {}".format(g2))
-    print("Measured: {}".format(g3))
-    print("Measured: {}".format(g4))
-    print("Measured: {}".format(g5))
-    
-    print("Measured: {}".format(w1))
-    print("Measured: {}".format(w2))
-    print("Measured: {}".format(w3))
-    print("Measured: {}".format(w4))
-    
-    
-    #print(int(layer1_weight_reg[0]),int(layer1_weight_reg[1]),int(layer1_weight_reg[2]))
-    #print(drawing_engine.get_latex())
 
 
 
