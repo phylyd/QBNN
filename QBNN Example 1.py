@@ -184,7 +184,6 @@ if __name__ == "__main__":
     
     print("===========================================================================")
     print("This is the QBNN demo")
-    print("The code will be updated to print the complete results, for now we print the following:) 
     print("The probabilities of obtaining the weight strings are:")
     
     print("Measured probabilty of weight string 00: {}".format(w1))
