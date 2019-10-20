@@ -17,41 +17,37 @@ The details of each block can be seen below:
 
 .. image:: circuits/generic_circuit.png
 
-The QBNN Examples with the corresponding quantum circuits are:
+The Examples with the corresponding quantum circuits are:
 
-【Example 1.】 Single neuron with 2 weights and 2 inputs:
-
-.. image:: circuits/Example_1_QBN_Circuit.png
-
-【Example 2.】 Single neuron with 3 weights and 3 inputs:
+Single neuron with 3 weights and 3 inputs:
 
 .. image:: circuits/Example_2_QBN_Circuit.png
 
-【Example 3.】 3-layer Neural Network with 6 weights, 2 inputs and 1 ouput: 
+3-layer Neural Network with 6 weights, 2 inputs and 1 ouput: 
 
 .. image:: circuits/Example_3_QBNN_Circuit.png
 
-【Example 4.】 3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:  
+3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:  
 
 .. image:: circuits/Example_4_QBNN_Circuit.png
      
-For the QBN in Example 2 and QBNN in Example 4, we consider the following two tasks:
+For the QBN 3-1 and QBNN 3-2-1, we consider the following two tasks:
 
 .. image:: results/tasks.png
 
-When we apply task 1  to QBN in example 2, we see the weight state evolution over iterations: 
+When we apply task 1  to QBN 3-1, we see the weight state evolution over iterations: 
 
 .. image:: results/weight_state_evolution_Example_2_Task_1.png
 
-When we apply task 2 to QBN in example 2, we see the weight state evolution over iterations:
+When we apply task 2 to QBN 3-1, we see the weight state evolution over iterations:
 
 .. image:: results/weight_state_evolution_Example_2_Task_2.png
 
-For the QBNN in Example 3, we use the same training set as stated in Example 1. The weight state evolution during the training iterations is:
+For the QBNN 2-2-1, the weight state evolution during the training iterations is:
 
 .. image:: results/weight_state_evolution_Example_3.jpg
 
-Similarly, we trained the QBNN in Example 4 with the two tasks. For instance,the weight state evolution of the training with task 2:
+Similarly, we trained the QBNN 3-2-1 with the two tasks. For instance,the weight state evolution of the training with task 2:
 
 .. image:: results/weight_state_evolution_Example_4_Task_2.jpg
 
