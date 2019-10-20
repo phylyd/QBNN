@@ -194,7 +194,7 @@ if __name__ == "__main__":
        print("Measured probabilty of weight string 0000 00 : {}".format(w1))
        print("Measured probabilty of weight string 0000 01 : {}".format(w2))
 
-       print("Measured probabilty of weight string 0001 01 : {}".format(w5))
+       print("Measured probabilty of weight string 0001 01 : {}".format(w3))
       
        print("These weight strings are examples of optimal weights (0000 00 and 0001 01) and non-optimal weights (0000 01).")
        print("For the training set we use, there are 7 optimal weights among all 64 possibilities")
