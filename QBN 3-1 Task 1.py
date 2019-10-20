@@ -1,5 +1,3 @@
-#author: Yidong Liao         yidong.liao@uq.net.au
-
 import cmath
 import math
 
@@ -16,8 +14,8 @@ from hiq.projectq.backends import SimulatorMPI
 import projectq.setups.decompositions
 from mpi4py import MPI
 
-theta = math.pi/8    #the incremental in phase accumulation
-
+theta = math.pi/8
+  
 def qbn(eng): 
 
     CNOT | (layer1_weight_reg[0],layer1_input_reg[0])
@@ -56,28 +54,21 @@ def qnn(eng):
     
 def run_qnn(eng):
     
-    #X|des_output
+
     qnn(eng)
-   # X|des_output
+
     
     X|layer1_input_reg[0]
-    #X|des_output
     qnn(eng)
     X|layer1_input_reg[0]
-    #X|des_output
-
 
     X|layer1_input_reg[1]
-    #X|des_output
     qnn(eng)
     X|layer1_input_reg[1]
-    #X|des_output
 
     X|layer1_input_reg[2]
-    #X|des_output
     qnn(eng)
     X|layer1_input_reg[2]
-    #X|des_output
 
     X|layer1_input_reg[0]
     X|layer1_input_reg[1]
@@ -137,13 +128,11 @@ def add_minus_sign(eng):
     with Compute(eng):
           quanutm_phase_estimation(eng)
     
-    #X|phase_reg[1]
-    #X|phase_reg[0]
-    X|phase_reg[2]
+    X|phase_reg[1]
+    X|phase_reg[0]
     ControlledGate(NOT, 3)|(phase_reg[0],phase_reg[1],phase_reg[2],ancilla_qubit)
-    #X|phase_reg[0]
-    X|phase_reg[2]
-    #X|phase_reg[1]
+    X|phase_reg[0]
+    X|phase_reg[1]
     
     Uncompute(eng)
     
@@ -180,7 +169,7 @@ if __name__ == "__main__":
                , GreedyScheduler()
                ]
 
-    eng = HiQMainEngine(backend, engines)
+    eng = HiQMainEngine(backend, engines)  
 
     if MPI.COMM_WORLD.Get_rank() == 0:
 
@@ -220,7 +209,7 @@ if __name__ == "__main__":
     
       print("===========================================================================")
       print("This is the QBN 3-1, task 1 demo")
-      print("The probabilities of obtaining the weight strings are:")
+      print("With the highest N_t, the probabilities of obtaining the weight strings after 2 iterations are:")
     
       print("Measured probabilty of weight string 000: {}".format(w1))
       print("Measured probabilty of weight string 001: {}".format(w2))
@@ -231,10 +220,3 @@ if __name__ == "__main__":
       print("Measured probabilty of weight string 101: {}".format(w6))
       print("Measured probabilty of weight string 110: {}".format(w7))
       print("Measured probabilty of weight string 111: {}".format(w8))
-
-
-
-
-
-
-
