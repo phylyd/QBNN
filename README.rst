@@ -21,7 +21,6 @@ The Examples with the corresponding quantum circuits are:
 
 Single neuron with 3 weights and 3 inputs:
 
-.. image:: circuits/Example_2_QBN_Circuit.png
 .. image:: circuits/Example_2_QBN_Circuit2.png
 
 3-layer Neural Network with 6 weights, 2 inputs and 1 ouput: 
