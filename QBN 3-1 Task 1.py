@@ -198,24 +198,39 @@ if __name__ == "__main__":
       H | ancilla_qubit
 
       All(H) | layer1_weight_reg
-    
+      
+      #run the training cycle, one should adjust the number of loops and run the whole program again to get results for different iterations 
       with Loop(eng,2):
            run_qbnn(eng)
    
       H | ancilla_qubit
       X | ancilla_qubit
 
-      All(Measure) | layer1_weight_reg
-
       eng.flush()
-   
+     
+      w1=eng.backend.get_probability('000',layer1_weight_reg)
+      w2=eng.backend.get_probability('001',layer1_weight_reg)
+      w3=eng.backend.get_probability('010',layer1_weight_reg)
+      w4=eng.backend.get_probability('011',layer1_weight_reg)
+      w5=eng.backend.get_probability('100',layer1_weight_reg)
+      w6=eng.backend.get_probability('101',layer1_weight_reg)
+      w7=eng.backend.get_probability('110',layer1_weight_reg)
+      w8=eng.backend.get_probability('111',layer1_weight_reg)
+    
+    
       print("===========================================================================")
-      print("This is the QBNN 3-1, task 1 demo")
-      print("The measured weight string is:")
-      print(int(layer1_weight_reg[0]),int(layer1_weight_reg[1]),int(layer1_weight_reg[2]))
+      print("This is the QBN 3-1, task 1 demo")
+      print("The probabilities of obtaining the weight strings are:")
     
-    
-
+      print("Measured probabilty of weight string 000: {}".format(w1))
+      print("Measured probabilty of weight string 001: {}".format(w2))
+      print("Measured probabilty of weight string 010: {}".format(w3))
+      print("Measured probabilty of weight string 011: {}".format(w4))
+   
+      print("Measured probabilty of weight string 100: {}".format(w5))
+      print("Measured probabilty of weight string 101: {}".format(w6))
+      print("Measured probabilty of weight string 110: {}".format(w7))
+      print("Measured probabilty of weight string 111: {}".format(w8))
 
 
 
