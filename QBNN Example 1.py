@@ -14,6 +14,7 @@ from projectq.cengines import (MainEngine,
 from hiq.projectq.cengines import GreedyScheduler, HiQMainEngine
 from hiq.projectq.backends import SimulatorMPI
 import projectq.setups.decompositions
+from mpi4py import MPI
 
 theta = math.pi/4     #the incremental in phase accumulation
   
@@ -163,13 +164,10 @@ if __name__ == "__main__":
 
     All(H) | layer1_weight_reg
    
-    #run the training cycles
+    #run the training cycles, one should adjust the number of loops and run the whole program again to get results for different iterations 
     with Loop(eng, 3):
          run_qbnn(eng)
-    #add_minus_sign(eng)
-    #quanutm_phase_estimation(eng)
-    #qnn(eng)
-    #run_qnn(eng)
+
     H | ancilla_qubit
     X | ancilla_qubit
     
