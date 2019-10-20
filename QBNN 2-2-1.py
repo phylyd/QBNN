@@ -171,7 +171,8 @@ if __name__ == "__main__":
 
        All(H) | layer1_weight_reg
        All(H) | layer2_weight_reg
-
+        
+       #run the training cycle, one should adjust the number of loops and run the whole program again to get results for different iterations 
        with Loop(eng, 2):
            run_qbnn(eng)
     
@@ -199,3 +200,7 @@ if __name__ == "__main__":
        print("For the training set we use, there are 7 optimal weights among all 64 possibilities")
        print("After 2 iterations, the 7 optimal weights'probabilities are amplified to 0.14099 and the rest 57 weights to 0.000229")
        print("The sum of the probabilities of all weights is 1")
+      
+      
+      
+      
