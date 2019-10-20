@@ -13,7 +13,7 @@ All the implementation examples execute the following generic scheme of training
 
 .. image:: circuits/generic_circuit.png
 
-The Examples with the corresponding quantum circuits are:
+The Examples are:
 
 Single neuron with 3 weights and 3 inputs (QBN 3-1):
 
