@@ -11,7 +11,7 @@ The hierachy of the code can be illustrated as follow:
 
 All the implementation examples execute the following generic training cycle:
 
-.. image:: circuits/training_cycle.png
+.. image:: circuits/training_cycle.png 
 
 The details of each block can be seen below: 
 
