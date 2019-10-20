@@ -1,35 +1,21 @@
-
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun May 26 13:15:41 2019
-
-@author: Phylyd
-"""
-
-import sys
-import numpy as np
 import cmath
 import math
 
-from hiq.ops import Ph,ControlledGate,NOT,CNOT,H, Z, All, R, Swap, Measure, X, get_inverse, QFT, Tensor, BasicGate
-from hiq.meta import Loop, Compute, Uncompute, Control
+from projectq.ops import Ph,ControlledGate,NOT,CNOT,H, Z, All, R, Swap, Measure, X, get_inverse, QFT, Tensor, BasicGate
+from projectq.meta import Loop, Compute, Uncompute, Control
 
-from hiq.backends import CircuitDrawer, CommandPrinter, Simulator
-from hiq.cengines import (MainEngine,
+from projectq.cengines import (MainEngine,
                                AutoReplacer,
                                LocalOptimizer,
                                TagRemover,
                                DecompositionRuleSet)
-import ctypes
-ctypes.CDLL("libmpi.so", mode=ctypes.RTLD_GLOBAL)
+from hiq.projectq.cengines import GreedyScheduler, HiQMainEngine
+from hiq.projectq.backends import SimulatorMPI
+import projectq.setups.decompositions
+from mpi4py import MPI
 
-from huawei.hiq.cengines import GreedyScheduler
-import hiq.setups.decompositions
-
-theta = math.pi/8
-
-
+theta = math.pi/4
+  
 def qbn(eng): 
 
     CNOT | (layer1_weight_reg[0],layer1_input_reg[0])
@@ -79,9 +65,11 @@ def run_qnn(eng):
 
     X|layer1_input_reg[1]
     X|layer1_input_reg[3]
+    X|des_output
     qnn(eng)
     X|layer1_input_reg[1]
     X|layer1_input_reg[3]
+    X|des_output
 
     X|layer1_input_reg[0]
     X|layer1_input_reg[2]
@@ -120,11 +108,11 @@ def add_minus_sign(eng):
     with Compute(eng):
           quanutm_phase_estimation(eng)
     
-    X|phase_reg[1]
-    X|phase_reg[0]
+    
+    X|phase_reg[2]
     ControlledGate(NOT, 3)|(phase_reg[0],phase_reg[1],phase_reg[2],ancilla_qubit)
-    X|phase_reg[1]
-    X|phase_reg[0]
+    X|phase_reg[2]
+    
     
     Uncompute(eng)
     
@@ -145,58 +133,65 @@ def run_qbnn(eng):
     add_minus_sign(eng)
     
     diffusion(eng)
-    
+
 
 if __name__ == "__main__":
+
+    backend = SimulatorMPI(gate_fusion=True, num_local_qubits=20)
+
+    cache_depth = 10
+    rule_set = DecompositionRuleSet(modules=[projectq.setups.decompositions])
+    engines = [TagRemover()
+               , LocalOptimizer(cache_depth)
+               , AutoReplacer(rule_set)
+               , TagRemover()
+               , LocalOptimizer(cache_depth)
+               , GreedyScheduler()
+               ]
+
+    eng = HiQMainEngine(backend, engines)  
+
+    if MPI.COMM_WORLD.Get_rank() == 0:
+
+       layer1_weight_reg = eng.allocate_qureg(4)
+       layer1_input_reg = eng.allocate_qureg(4)
+
+       layer2_weight_reg = eng.allocate_qureg(2)
+
+
+       output_reg = eng.allocate_qureg(3)
+       des_output = eng.allocate_qubit()
+       ancilla_qubit = eng.allocate_qubit()
+       ancilla2 = eng.allocate_qubit()
+       phase_reg = eng.allocate_qureg(3)
     
-    eng = MainEngine(backend = Simulator(rnd_seed = 1))
+       X | ancilla_qubit
+       H | ancilla_qubit
 
-    layer1_weight_reg = eng.allocate_qureg(4)
-    layer1_input_reg = eng.allocate_qureg(4)
+       All(H) | layer1_weight_reg
+       All(H) | layer2_weight_reg
 
-    layer2_weight_reg = eng.allocate_qureg(2)
-
-
-    output_reg = eng.allocate_qureg(3)
-    des_output = eng.allocate_qubit()
-    ancilla_qubit = eng.allocate_qubit()
-    ancilla2 = eng.allocate_qubit()
-    phase_reg = eng.allocate_qureg(3)
+       with Loop(eng, 2):
+           run_qbnn(eng)
     
-    X | ancilla_qubit
-    H | ancilla_qubit
+       H | ancilla_qubit
+       X | ancilla_qubit
 
-    All(H) | layer1_weight_reg
-    All(H) | layer2_weight_reg
-
-    with Loop(eng, 2):
-        run_qbnn(eng)
-    #add_minus_sign(eng)
+       eng.flush()
+     
+       w1=eng.backend.get_probability('000000',layer1_weight_reg+layer2_weight_reg)
+       w2=eng.backend.get_probability('000001',layer1_weight_reg+layer2_weight_reg)
+       w3=eng.backend.get_probability('000010',layer1_weight_reg+layer2_weight_reg)
+       w4=eng.backend.get_probability('000011',layer1_weight_reg+layer2_weight_reg)
+       w5=eng.backend.get_probability('000101',layer1_weight_reg+layer2_weight_reg)
+      
+       print("==========================================================================")
+       print("This is the QBN 2-2-1 demo")
+       print("With the highest N_t, the probabilities of obtaining the weight strings after 2 iterations are:")
     
-    #run_qbnn(eng)
-    
-    H | ancilla_qubit
-    X | ancilla_qubit
-
-    All(Measure) | layer1_weight_reg
-    All(Measure) | layer2_weight_reg
-
-
-    
-    eng.flush()
-    print("===========================================================================")
-    print("This is the QBNN demo")
-    print("The optimal weight string is:")
-    print(int(layer1_weight_reg[0]),int(layer1_weight_reg[1]),int(layer1_weight_reg[2]),int(layer1_weight_reg[3]),int(layer2_weight_reg[0]),int(layer2_weight_reg[1]))
-
-
-
-
-
-
-
-
-
-
-
-
+       print("Measured probabilty of weight string 0000 00 : {}".format(w1))
+       print("Measured probabilty of weight string 0000 01 : {}".format(w2))
+       print("Measured probabilty of weight string 0000 10 : {}".format(w3))
+       print("Measured probabilty of weight string 0000 11 : {}".format(w4))
+       print("Measured probabilty of weight string 0001 01 : {}".format(w5))
+      
