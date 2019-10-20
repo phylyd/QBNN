@@ -22,14 +22,17 @@ The Examples with the corresponding quantum circuits are:
 Single neuron with 3 weights and 3 inputs:
 
 .. image:: circuits/Example_2_QBN_Circuit.png
+.. image:: circuits/Example_2_QBN_Circuit2.png
 
 3-layer Neural Network with 6 weights, 2 inputs and 1 ouput: 
 
 .. image:: circuits/Example_3_QBNN_Circuit.png
+.. image:: circuits/Example_3_QBNN_Circuit2.png
 
 3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:  
 
 .. image:: circuits/Example_4_QBNN_Circuit.png
+.. image:: circuits/Example_4_QBNN_Circuit2.png
      
 For the QBN 3-1 and QBNN 3-2-1, we consider the following two tasks:
 
