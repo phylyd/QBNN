@@ -145,8 +145,22 @@ def run_qbnn(eng):
     
 
 if __name__ == "__main__":
-    
-    eng = MainEngine(backend = Simulator(rnd_seed = 1))
+
+    backend = SimulatorMPI(gate_fusion=True, num_local_qubits=23)
+
+    cache_depth = 10
+    rule_set = DecompositionRuleSet(modules=[projectq.setups.decompositions])
+    engines = [TagRemover()
+               , LocalOptimizer(cache_depth)
+               , AutoReplacer(rule_set)
+               , TagRemover()
+               , LocalOptimizer(cache_depth)
+               , GreedyScheduler()
+               ]
+
+    eng = HiQMainEngine(backend, engines)
+
+    if MPI.COMM_WORLD.Get_rank() == 0:
     
     #allocate all the qubits
     layer1_weight_reg = eng.allocate_qureg(2)
