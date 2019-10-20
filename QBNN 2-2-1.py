@@ -65,11 +65,11 @@ def run_qnn(eng):
 
     X|layer1_input_reg[1]
     X|layer1_input_reg[3]
-    X|des_output
+   # X|des_output
     qnn(eng)
     X|layer1_input_reg[1]
     X|layer1_input_reg[3]
-    X|des_output
+    #X|des_output
 
     X|layer1_input_reg[0]
     X|layer1_input_reg[2]
@@ -109,9 +109,11 @@ def add_minus_sign(eng):
           quanutm_phase_estimation(eng)
     
     
-    X|phase_reg[2]
+    X|phase_reg[0]
+    X|phase_reg[1]
     ControlledGate(NOT, 3)|(phase_reg[0],phase_reg[1],phase_reg[2],ancilla_qubit)
-    X|phase_reg[2]
+    X|phase_reg[0]
+    X|phase_reg[1]
     
     
     Uncompute(eng)
