@@ -250,7 +250,7 @@ if __name__ == "__main__":
        All(H) | layer1_weight_reg
        All(H) | layer2_weight_reg
 
-    #run the training cycle, one should
+    #run the training cycle, one should adjust the number of loops and run the whole program again to get results for different iterations 
        with Loop(eng,2):
              run_qbnn(eng)
     
