@@ -9,25 +9,21 @@ The hierachy of the code can be illustrated as follow:
 
 .. image:: Code_hierachy.png
 
-All the implementation examples execute the following generic training cycle:
-
-.. image:: circuits/training_cycle.png 
-
-The details of each block can be seen below: 
+All the implementation examples execute the following generic scheme of training :
 
 .. image:: circuits/generic_circuit.png
 
 The Examples with the corresponding quantum circuits are:
 
-Single neuron with 3 weights and 3 inputs:
+Single neuron with 3 weights and 3 inputs (QBN 3-1):
 
 .. image:: circuits/Example_2_QBN_Circuit2.png
 
-3-layer Neural Network with 6 weights, 2 inputs and 1 ouput: 
+3-layer Neural Network with 6 weights, 2 inputs and 1 ouput (QBNN 2-2-1): 
 
 .. image:: circuits/Example_3_QBNN_Circuit.png
 
-3-layer Neural Network with 8 weights, 2 inputs and 1 ouput:  
+3-layer Neural Network with 8 weights, 2 inputs and 1 ouput(QBNN 3-2-1):  
 
 .. image:: circuits/Example_4_QBNN_Circuit.png
      
@@ -43,7 +39,7 @@ When we apply task 2 to QBN 3-1, we see the weight state evolution over iteratio
 
 .. image:: results/weight_state_evolution_Example_2_Task_2.png
 
-For the QBNN 2-2-1, the weight state evolution during the training iterations is:
+For the QBNN 2-2-1 with the task given in the paper, the weight state evolution during the training iterations is:
 
 .. image:: results/weight_state_evolution_Example_3.jpg
 
