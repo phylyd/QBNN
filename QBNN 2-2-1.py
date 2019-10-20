@@ -65,11 +65,10 @@ def run_qnn(eng):
 
     X|layer1_input_reg[1]
     X|layer1_input_reg[3]
-   # X|des_output
     qnn(eng)
     X|layer1_input_reg[1]
     X|layer1_input_reg[3]
-    #X|des_output
+    
 
     X|layer1_input_reg[0]
     X|layer1_input_reg[2]
@@ -183,17 +182,20 @@ if __name__ == "__main__":
      
        w1=eng.backend.get_probability('000000',layer1_weight_reg+layer2_weight_reg)
        w2=eng.backend.get_probability('000001',layer1_weight_reg+layer2_weight_reg)
-       w3=eng.backend.get_probability('000010',layer1_weight_reg+layer2_weight_reg)
-       w4=eng.backend.get_probability('000011',layer1_weight_reg+layer2_weight_reg)
-       w5=eng.backend.get_probability('000101',layer1_weight_reg+layer2_weight_reg)
+      
+       w3=eng.backend.get_probability('000101',layer1_weight_reg+layer2_weight_reg)
       
        print("==========================================================================")
        print("This is the QBN 2-2-1 demo")
-       print("With the highest N_t, the probabilities of obtaining the weight strings after 2 iterations are:")
+       print("Training set is {(0,0,0),(0,1,0),(1,0,0),(1,1,1) ")
+       print("With the highest N_t, the probabilities of obtaining the following weight strings after 2 iterations are:")
     
        print("Measured probabilty of weight string 0000 00 : {}".format(w1))
        print("Measured probabilty of weight string 0000 01 : {}".format(w2))
-       print("Measured probabilty of weight string 0000 10 : {}".format(w3))
-       print("Measured probabilty of weight string 0000 11 : {}".format(w4))
+
        print("Measured probabilty of weight string 0001 01 : {}".format(w5))
       
+       print("These weight strings are examples of optimal weights (0000 00 and 0001 01) and non-optimal weights (0000 01).")
+       print("For the training set we use, there are 7 optimal weights among all 64 possibilities")
+       print("After 2 iterations, the 7 optimal weights'probabilities are amplified to 0.14099 and the rest 57 weights to 0.000229")
+       print("The sum of the probabilities of all weights is 1")
