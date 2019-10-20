@@ -210,7 +210,7 @@ if __name__ == "__main__":
       eng.flush()
    
       print("===========================================================================")
-      print("This is the QBNN 3-1 demo")
+      print("This is the QBNN 3-1, task 1 demo")
       print("The measured weight string is:")
       print(int(layer1_weight_reg[0]),int(layer1_weight_reg[1]),int(layer1_weight_reg[2]))
     
